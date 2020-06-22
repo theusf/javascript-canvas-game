@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Animação</title>
+
+
+<style type="text/css">
+
+body {
+background-image: url("fundo.png");
+
+}
+
+
+@font-face { font-family: Minecraftia-Regular; src: url('Minecraftia-Regular.ttf'); } 
+
+
+</style>
+
+
+
+<script language="JavaScript" type="text/javascript">
+<!--
+var aud = new Audio();
+aud.src = 'music1.mp3';
+aud.play();
+
+var objCanvas=null; // objeto que representa o canvas
+var objContexto=null; // objeto que representa o
+// Contexto do canvas
+
+// Objetos Image para cada coisa que vai aparecer na tela
+var imgFundo = new Image();
+imgFundo.src = "img/telainicial.png";
+
+
+var imgHeroi = new Image();
+imgHeroi.src = "img/heroi1.png";
+
+
+var imgHeroiMulher = new Image();
+imgHeroiMulher.src = "img/heroi1mulher.png";
+
+var imgPorcoIcone = new Image();
+imgPorcoIcone.src = "img/porcoicone.png";
+
+var imgMonstroIcone = new Image();
+imgMonstroIcone.src = "img/monstroicone.png";
+
+var imgMonstro = new Image();
+imgMonstro.src = "img/monstro1.png";
+
+var imgPorco = new Image();
+imgPorco.src = "img/porco1.png";
+
+var imgTiro = new Image();
+imgTiro.src = "img/tiro.png";
+
+var imgPoção = new Image();
+		imgPoção.src = "img/poção.png";
+
+// Controle de Posicionamento do Heroi
+var xHeroi= 500;
+var yHeroi=630;
+
+
+// Controle de Posicionamento do Monstro
+var xMonstro=300;
+var yMonstro=200;
+
+//Controle de Poscionamento dos Animais
+var xPorco= Math.random()*450 +30;
+var yPorco= Math.random()*450 +30;
+
+// Velocidades
+var VelocidadeDoMonstro = 200;
+
+
+// Posição dos icones
+var xPorcoIcone = 0;
+
+// Variveis de vivo ou morto
+var PorcoVivo = 0;
+var HeroiVivo = 0;
+var MonstroVivo = 0;
+
+// Apoio
+var HeroiSelecionado = false;
+var Poção = false;
+var xPoção = 700;
+var yPoção = 500;
+
+
+// Pontos
+var MatouPorcos = 0;
+var QntPoções = 0;
+
+// Vidas
+var VidaDoMonstro = 500;
+var VidaDoHeroi = 400;
+
+// Modo de jogo
+var ModoDeJogo = 1;
+
+// Tiro do monstro
+var xTiro= xMonstro;
+var yTiro= yMonstro;
+
+function AtualizaTela(){
+objContexto.drawImage(imgFundo,0,0);
+if ( ModoDeJogo == 1 ) {
+objContexto.drawImage(imgFundo,0,0);
+
+if ( HeroiVivo == 0) {
+
+objContexto.font = "25px Minecraftia-Regular";
+objContexto.fillText(QntPoções, 375, 765);
+objContexto.font = "20px Minecraftia-Regular";
+objContexto.fillText('Poção de velocidade - Apertar E', 590, 730);
+
+objContexto.drawImage(imgPoção, xPoção, yPoção);
+objContexto.drawImage(imgMonstro, xMonstro, yMonstro);
+objContexto.drawImage(imgHeroi, xHeroi, yHeroi); 
+}
+
+if ( PorcoVivo == 0 ){ 
+objContexto.drawImage(imgPorco, xPorco, yPorco); 
+}
+
+objContexto.font = "30px Minecraftia-Regular";
+objContexto.fillStyle = "white";
+objContexto.textAlign = "center";
+objContexto.fillText(MatouPorcos, 190, 88);
+objContexto.drawImage(imgPorcoIcone, 100, 30);
+objContexto.drawImage(imgMonstroIcone, 850, 30);
+ 
+if ( VelocidadeDoMonstro >= 150 ) { objContexto.fillText('Fácil', 970, 88) }; 
+if ( VelocidadeDoMonstro < 150 ) { objContexto.fillText('Médio', 970, 88) };
+if ( VelocidadeDoMonstro <= 100 ) { objContexto.fillText('Dificil', 970, 88) };
+
+
+}
+
+if (ModoDeJogo == 2) {
+objContexto.drawImage(imgFundo,0,0);
+if (MonstroVivo == 0) {
+objContexto.drawImage(imgMonstro, xMonstro, yMonstro);
+}
+objContexto.drawImage(imgHeroi, xHeroi, yHeroi); 
+
+objContexto.font = "30px Comic Sans MS";
+objContexto.fillStyle = "white";
+objContexto.textAlign = "center";
+objContexto.fillText(VidaDoMonstro, 190, 67);
+objContexto.drawImage(imgTiro, xTiro,yTiro );
+objContexto.font = "25px Minecraftia-Regular";
+objContexto.fillText('Esse modo ainda n funciona ;(', 600, 400);
+}
+
+
+}
+
+
+
+function MovimentoDoMonstro (){
+// direção para a qual o monstro vai se dirigir
+if ( HeroiVivo == 0) {
+if ( ModoDeJogo == 1 ){
+if ( xMonstro > xHeroi ) {
+xMonstro =( xMonstro - 1 ); }
+
+
+if ( yMonstro > yHeroi ) {
+yMonstro =( yMonstro - 1 ); }
+
+if ( xMonstro < xHeroi ) {
+xMonstro =( xMonstro + 1 ); }
+
+if ( yMonstro < yHeroi ) {
+yMonstro =( yMonstro + 1 ); }
+
+
+if ( ( yMonstro == yHeroi ) && ( xMonstro == xHeroi ) ) {
+aud.src = 'explode1.mp3';
+aud.volume= 1.0;
+aud.play();
+Matar(); }
+
+}}
+
+if (ModoDeJogo == 2) {
+
+var direcao = parseInt((Math.random()*10) % 4);
+if ( MonstroVivo == 0 ) {
+switch (direcao){
+case 0:xMonstro =(xMonstro + 5); break;
+case 1:yMonstro =(yMonstro + 5); break;
+case 2:xMonstro =(xMonstro - 5); break;
+case 3:yMonstro =(yMonstro - 5); break;
+}
+}
+}
+
+AtualizaTela();
+			window.setTimeout("MovimentoDoMonstro()", VelocidadeDoMonstro );
+}
+
+function TelaInicial (){
+
+imgFundo.src = "img/telainicial.png";
+objContexto.drawImage(imgFundo,0,0);
+objContexto.drawImage(imgFundo,0,0);
+}
+
+
+
+
+function MovimentoDoPorco (){
+// sorteia uma direção para a qual o monstro vai se dirigir
+var direcao = parseInt((Math.random()*10) % 4);
+if ( PorcoVivo == 0 ) {
+switch (direcao){
+case 0:xPorco=(xPorco + 5); break;
+case 1:yPorco=(yPorco + 5); break;
+case 2:xPorco=(xPorco - 5); break;
+case 3:yPorco=(yPorco - 5); break;
+}
+if ( xPorco > 1100 ){
+xPorco = xPorco - 20;
+}
+if ( yPorco > 600 ){
+yPorco = yPorco - 20;
+}
+if ( xPorco <= 30 ){
+xPorco = xPorco + 50;
+}
+if ( yPorco <= 30 ){
+yPorco = yPorco + 50;
+}
+
+}
+
+AtualizaTela();
+			window.setTimeout("MovimentoDoPorco()", 100 );
+}
+
+
+var I = 0;
+
+function tecla(){
+
+if ( event.keyCode == 100 ) {
+xHeroi=(xHeroi + 5);  if ( Poção == true ){ xHeroi=(xHeroi + 5); }
+AtualizaTela();// direita D
+}
+
+if ( event.keyCode == 115 ) {
+yHeroi=(yHeroi + 5); if ( Poção == true ){ yHeroi=(yHeroi + 5); }
+AtualizaTela(); // baixo S
+}
+
+if ( event.keyCode == 97 ) {
+xHeroi=(xHeroi - 5); if ( Poção == true ){ xHeroi=(xHeroi - 5); }
+AtualizaTela(); // esquerda A
+}
+
+if ( event.keyCode == 119 ) {
+if ( ModoDeJogo == 1 ) { yHeroi=(yHeroi - 5); if ( Poção == true ){ yHeroi=(yHeroi - 5); }} ;
+if ( ModoDeJogo == 2 ) { 
+
+window.setTimeout("yHeroi=( yHeroi - 5)",500);
+AtualizaTela();
+window.setTimeout("yHeroi=( yHeroi - 5)",1000);
+AtualizaTela(); 
+window.setTimeout("yHeroi=( yHeroi - 5)",1250);
+AtualizaTela(); 
+window.setTimeout("yHeroi=( yHeroi - 5)",1500);
+AtualizaTela(); 
+window.setTimeout("yHeroi=( yHeroi - 5)",2000);
+AtualizaTela(); 
+
+} ;
+AtualizaTela(); // cima W
+}
+
+if ( event.keyCode == 32 ) {
+xHeroi=(xHeroi + 7);
+AtualizaTela(); // espaço
+}
+
+
+if (event.keyCode == 113 ) {
+if ( ( xHeroi >= xPorco-50 && xHeroi <= xPorco+50 ) &&  ( yHeroi >= yPorco-50 && yHeroi <= yPorco+50 ) ) { 
+var audio = new Audio('porco.mp3');
+audio.play();
+PorcoVivo = 1;
+MatouPorcos = MatouPorcos + 1;
+AtualizaTela();
+AnimalRenasce(); }}
+
+
+if ( event.keyCode == 13 ) {
+imgFundo.src = "img/fundo1.png";
+aud.src = 'music.mp3';
+aud.play();
+MovimentoDoPorco ();
+MovimentoDoMonstro (); }
+
+
+if ( event.keyCode == 102 ) { if ( HeroiSelecionado == false ){
+imgHeroi.src = "img/heroi1mulher.png";
+imgFundo.src = "img/fundo1.png";
+HeroiSelecionado = true;
+aud.src = 'music.mp3';
+aud.play();
+MovimentoDoPorco ();
+MovimentoDoMonstro (); }}
+
+
+if ( event.keyCode == 104 ) {
+if ( HeroiSelecionado == false ){
+imgFundo.src = "img/fundo1.png";
+HeroiSelecionado = true;
+aud.src = 'music.mp3';
+aud.play();
+MovimentoDoPorco ();
+MovimentoDoMonstro (); }}
+
+if ( xHeroi <= 0 ) {
+xHeroi = xHeroi + 5
+AtualizaTela(); }
+
+if ( yHeroi <= 80 ) {
+yHeroi = yHeroi + 5
+AtualizaTela(); }
+
+if ( yHeroi >= 600 ) {
+yHeroi = yHeroi - 5
+AtualizaTela(); }
+
+
+if ( xHeroi >= 1100 ) {
+xHeroi = xHeroi - 5
+AtualizaTela(); }
+
+if (event.keyCode == 113 ) {
+if ( ModoDeJogo == 2 ) {
+if ( ( xHeroi >= xMonstro - 50 && xHeroi <= xMonstro + 50 ) &&  ( yHeroi >= yMonstro - 50 && yHeroi <= yMonstro + 50 ) ) {
+VidaDoMonstro = VidaDoMonstro - 10; 
+if ( VidaDoMonstro <= 0 ){     MonstroVivo = 1; }
+
+}
+}}
+
+if (event.keyCode == 50) {
+ModoDeJogo = 2;
+xMonstro = 100;
+yMonstro = 400;
+imgFundo.src = "img/fundo2.png";
+imgMonstro.src = "img/drago.png";
+Tiro();
+AtualizaTela();
+MovimentoDoMonstro();
+}
+
+
+
+if ( ( xHeroi >= xPoção-30 && xHeroi <= xPoção+30 ) &&  ( yHeroi >= yPoção-30 && yHeroi <= yPoção+30 ) ){ 
+ 
+ xPoção = 1900; 
+ yPoção = 1900; 
+ AtualizaTela(); 
+ QntPoções = QntPoções + 1;
+ 
+ 
+ window.setTimeout("xPoção = Math.random()*600 +60;", 6200);
+ window.setTimeout("yPoção = Math.random()*500 +60;", 6200);
+  }	
+	
+	if ( event.keyCode == 101 ) {  if (QntPoções>0){ Poção = true ; QntPoções = QntPoções - 1; window.setTimeout("Poção = false", 4800); }  }
+
+AtualizaTela(); 
+}
+
+
+function Matar (){
+xHeroi = 0;
+yHeroi = 10;
+xMonstro = 100;
+yMonstro = 200;
+aud.src = 'explode1.mp3';
+aud.play();
+imgFundo.src = "img/perdeu.png"
+AtualizaTela();
+window.setTimeout("HeroiVivo = 1;", 100);
+}
+
+function AnimalRenasce() {
+var direcao = parseInt((Math.random()*10) % 4);
+switch (direcao){
+case 0:xPorco=(xPorco + 300); break;
+case 1:yPorco=(yPorco + 300); break;
+case 2:xPorco=(xPorco - 300); break;
+case 3:yPorco=(yPorco - 300); break;
+}
+
+var qualanimal = parseInt((Math.random()*10) % 3);
+switch (qualanimal){
+case 0: imgPorco.src = "img/vaca.png"; break;
+case 1: imgPorco.src = "img/porco1.png"; break;
+case 2: imgPorco.src = "img/lula.png"; break;
+}
+
+var qualmonstro = parseInt((Math.random()*10) % 3);
+switch (qualmonstro){
+case 0: imgMonstro.src = "img/monstro1.png"; break;
+case 1: imgMonstro.src = "img/enderman.png"; break;
+case 2: imgMonstro.src = "img/esqueleto.png"; break;
+}
+
+VelocidadeDoMonstro = VelocidadeDoMonstro - 10;
+MovimentoDoMonstro();
+			window.setTimeout("PorcoVivo = 0;", 700 );
+			window.setTimeout("AtualizaTela();", 900 );
+
+
+}
+
+
+function Tiro() {
+
+
+
+
+if ( xHeroi <= xMonstro ){ xTiro = xTiro - 3 }; 
+if ( xHeroi >= xMonstro ){ xTiro = xTiro + 3 }; 
+
+if ( yHeroi <= yMonstro ){ yTiro = yTiro - 3 }; 
+if ( yHeroi >= yMonstro ){ yTiro = yTiro + 3 }; 
+
+
+if (xTiro >= 2000) {
+xTiro = xMonstro + 400; yTiro = yMonstro ;}
+
+if (xTiro <= -10) {
+xTiro = xMonstro + 400; yTiro = yMonstro;}
+
+if (yTiro >= 2000) {
+xTiro = xMonstro + 400; yTiro = yMonstro ;}
+
+if (yTiro <= -10) {
+xTiro = xMonstro + 400; yTiro = yMonstro;}
+
+AtualizaTela();
+ window.setTimeout ( "Tiro()", 10); 
+ 
+ 
+}
+
+function Iniciar(){
+objCanvas = document.getElementById("meuCanvas");
+objContexto = objCanvas.getContext("2d");
+
+objContexto.drawImage(imgFundo,0,0);
+
+AtualizaTela();
+}
+
+
+
+
+-->
+</script>
+</head>
+<body onload="" >
+
+
+
+
+
+
+
+
+
+
+<script language="JavaScript" type="text/javascript">
+document.body.onkeypress = tecla;
+
+window.onload = function () {
+
+objCanvas = document.getElementById("meuCanvas");
+objContexto = objCanvas.getContext("2d");
+TelaInicial();
+}
+
+
+</script>
+
+
+
+
+<center>
+
+<canvas id="meuCanvas" position= "fixed" width="1200"  height="800" style="border:0px solid #000000;"> 
+Seu browser não suporta o elemento CANVAS, atualize-se!!! </canvas>
+
+
+
+
+
+			 
+<audio autoplay loop id="musica">
+   <source src="explod1.ogg" type="audio/ogg">
+   <source src="musi.mp3" type="audio/mpeg">
+ Your browser does not support the audio element.
+</audio> 
+			 
+</body>
+</html>
