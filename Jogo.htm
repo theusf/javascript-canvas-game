@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Animação</title>
+<title>Animaï¿½ï¿½o</title>
 
 
 <style type="text/css">
@@ -56,8 +56,8 @@ imgPorco.src = "img/porco1.png";
 var imgTiro = new Image();
 imgTiro.src = "img/tiro.png";
 
-var imgPoção = new Image();
-		imgPoção.src = "img/poção.png";
+var imgPocao = new Image();
+		imgPocao.src = "img/pocao.png";
 
 // Controle de Posicionamento do Heroi
 var xHeroi= 500;
@@ -76,7 +76,7 @@ var yPorco= Math.random()*450 +30;
 var VelocidadeDoMonstro = 200;
 
 
-// Posição dos icones
+// Posiï¿½ï¿½o dos icones
 var xPorcoIcone = 0;
 
 // Variveis de vivo ou morto
@@ -86,14 +86,14 @@ var MonstroVivo = 0;
 
 // Apoio
 var HeroiSelecionado = false;
-var Poção = false;
-var xPoção = 700;
-var yPoção = 500;
+var Pocao = false;
+var xPocao = 700;
+var yPocao = 500;
 
 
 // Pontos
 var MatouPorcos = 0;
-var QntPoções = 0;
+var QntPocoes = 0;
 
 // Vidas
 var VidaDoMonstro = 500;
@@ -114,11 +114,11 @@ objContexto.drawImage(imgFundo,0,0);
 if ( HeroiVivo == 0) {
 
 objContexto.font = "25px Minecraftia-Regular";
-objContexto.fillText(QntPoções, 375, 765);
+objContexto.fillText(QntPocoes, 375, 765);
 objContexto.font = "20px Minecraftia-Regular";
-objContexto.fillText('Poção de velocidade - Apertar E', 590, 730);
+objContexto.fillText('Pocao de velocidade - Apertar E', 590, 730);
 
-objContexto.drawImage(imgPoção, xPoção, yPoção);
+objContexto.drawImage(imgPocao, xPocao, yPocao);
 objContexto.drawImage(imgMonstro, xMonstro, yMonstro);
 objContexto.drawImage(imgHeroi, xHeroi, yHeroi); 
 }
@@ -134,8 +134,8 @@ objContexto.fillText(MatouPorcos, 190, 88);
 objContexto.drawImage(imgPorcoIcone, 100, 30);
 objContexto.drawImage(imgMonstroIcone, 850, 30);
  
-if ( VelocidadeDoMonstro >= 150 ) { objContexto.fillText('Fácil', 970, 88) }; 
-if ( VelocidadeDoMonstro < 150 ) { objContexto.fillText('Médio', 970, 88) };
+if ( VelocidadeDoMonstro >= 150 ) { objContexto.fillText('Fï¿½cil', 970, 88) }; 
+if ( VelocidadeDoMonstro < 150 ) { objContexto.fillText('Mï¿½dio', 970, 88) };
 if ( VelocidadeDoMonstro <= 100 ) { objContexto.fillText('Dificil', 970, 88) };
 
 
@@ -163,7 +163,7 @@ objContexto.fillText('Esse modo ainda n funciona ;(', 600, 400);
 
 
 function MovimentoDoMonstro (){
-// direção para a qual o monstro vai se dirigir
+// direï¿½ï¿½o para a qual o monstro vai se dirigir
 if ( HeroiVivo == 0) {
 if ( ModoDeJogo == 1 ){
 if ( xMonstro > xHeroi ) {
@@ -216,7 +216,7 @@ objContexto.drawImage(imgFundo,0,0);
 
 
 function MovimentoDoPorco (){
-// sorteia uma direção para a qual o monstro vai se dirigir
+// sorteia uma direï¿½ï¿½o para a qual o monstro vai se dirigir
 var direcao = parseInt((Math.random()*10) % 4);
 if ( PorcoVivo == 0 ) {
 switch (direcao){
@@ -250,22 +250,22 @@ var I = 0;
 function tecla(){
 
 if ( event.keyCode == 100 ) {
-xHeroi=(xHeroi + 5);  if ( Poção == true ){ xHeroi=(xHeroi + 5); }
+xHeroi=(xHeroi + 5);  if ( Pocao == true ){ xHeroi=(xHeroi + 5); }
 AtualizaTela();// direita D
 }
 
 if ( event.keyCode == 115 ) {
-yHeroi=(yHeroi + 5); if ( Poção == true ){ yHeroi=(yHeroi + 5); }
+yHeroi=(yHeroi + 5); if ( Pocao == true ){ yHeroi=(yHeroi + 5); }
 AtualizaTela(); // baixo S
 }
 
 if ( event.keyCode == 97 ) {
-xHeroi=(xHeroi - 5); if ( Poção == true ){ xHeroi=(xHeroi - 5); }
+xHeroi=(xHeroi - 5); if ( Pocao == true ){ xHeroi=(xHeroi - 5); }
 AtualizaTela(); // esquerda A
 }
 
 if ( event.keyCode == 119 ) {
-if ( ModoDeJogo == 1 ) { yHeroi=(yHeroi - 5); if ( Poção == true ){ yHeroi=(yHeroi - 5); }} ;
+if ( ModoDeJogo == 1 ) { yHeroi=(yHeroi - 5); if ( Pocao == true ){ yHeroi=(yHeroi - 5); }} ;
 if ( ModoDeJogo == 2 ) { 
 
 window.setTimeout("yHeroi=( yHeroi - 5)",500);
@@ -285,7 +285,7 @@ AtualizaTela(); // cima W
 
 if ( event.keyCode == 32 ) {
 xHeroi=(xHeroi + 7);
-AtualizaTela(); // espaço
+AtualizaTela(); // espaï¿½o
 }
 
 
@@ -365,19 +365,19 @@ MovimentoDoMonstro();
 
 
 
-if ( ( xHeroi >= xPoção-30 && xHeroi <= xPoção+30 ) &&  ( yHeroi >= yPoção-30 && yHeroi <= yPoção+30 ) ){ 
+if ( ( xHeroi >= xPocao-30 && xHeroi <= xPocao+30 ) &&  ( yHeroi >= yPocao-30 && yHeroi <= yPocao+30 ) ){ 
  
- xPoção = 1900; 
- yPoção = 1900; 
+ xPocao = 1900; 
+ yPocao = 1900; 
  AtualizaTela(); 
- QntPoções = QntPoções + 1;
+ QntPocoes = QntPocoes + 1;
  
  
- window.setTimeout("xPoção = Math.random()*600 +60;", 6200);
- window.setTimeout("yPoção = Math.random()*500 +60;", 6200);
+ window.setTimeout("xPocao = Math.random()*600 +60;", 6200);
+ window.setTimeout("yPocao = Math.random()*500 +60;", 6200);
   }	
 	
-	if ( event.keyCode == 101 ) {  if (QntPoções>0){ Poção = true ; QntPoções = QntPoções - 1; window.setTimeout("Poção = false", 4800); }  }
+	if ( event.keyCode == 101 ) {  if (QntPocoes>0){ Pocao = true ; QntPocoes = QntPocoes - 1; window.setTimeout("Pocao = false", 4800); }  }
 
 AtualizaTela(); 
 }
@@ -502,7 +502,7 @@ TelaInicial();
 <center>
 
 <canvas id="meuCanvas" position= "fixed" width="1200"  height="800" style="border:0px solid #000000;"> 
-Seu browser não suporta o elemento CANVAS, atualize-se!!! </canvas>
+Seu browser nï¿½o suporta o elemento CANVAS, atualize-se!!! </canvas>
 
 
 
